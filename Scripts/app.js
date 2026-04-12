@@ -21,7 +21,7 @@ function fetchDogs() {
     .then(function(data) {
       console.log("DATA:", data);
 
-      dogs = data.slice(0, 100);
+      dogs = data.slice(0, 200);
 
       document.getElementById("loading").style.display = "none";
 
