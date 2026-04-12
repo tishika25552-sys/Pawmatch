@@ -10,8 +10,25 @@
   <nav class="navbar">
     <h1>🐾 PawMatch</h1>
     <input type="text" id="search" placeholder="Search breeds..." />
+
+    <select id="filter">
+      <option value="">Filter</option>
+      <option value="Playful">Playful</option>
+      <option value="Loyal">Loyal</option>
+      <option value="Intelligent">Intelligent</option>
+      <option value="Friendly">Friendly</option>
+      <option value="Energetic">Energetic</option>
+    </select>
+
+    <select id="sort">
+      <option value="">Sort</option>
+      <option value="az">A-Z</option>
+    </select>
+
     <button id="darkToggle">🌙</button>
   </nav>
+  <h2 id="loading" style="text-align:center;">Loading dogs... 🐶</h2>
+
 
   <div id="dog-container" class="grid"></div>
 

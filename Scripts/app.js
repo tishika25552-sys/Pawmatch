@@ -4,6 +4,8 @@ var dogs = [];
 
 
 function fetchDogs() {
+  document.getElementById("loading").style.display = "block";
+
   fetch("https://api.thedogapi.com/v1/breeds", {
     method: "GET",
     headers: {
@@ -19,7 +21,10 @@ function fetchDogs() {
     .then(function(data) {
       console.log("DATA:", data);
 
-      dogs = data.slice(0, 200);
+      dogs = data.slice(0, 100);
+
+      document.getElementById("loading").style.display = "none";
+
       displayDogs(dogs);
     })
     .catch(function(error) {
@@ -39,12 +44,11 @@ function displayDogs(data) {
   container.innerHTML = "";
 
   if (data.length === 0) {
-    container.innerHTML = "<h2>No breeds found</h2>";
+    container.innerHTML = "<h2>No breeds found 🐶</h2>";
     return;
   }
 
-  for (var i = 0; i < data.length; i++) {
-    var dog = data[i];
+  data.map(function(dog) {
 
     var card = document.createElement("div");
     card.className = "card";
@@ -81,22 +85,54 @@ function displayDogs(data) {
     card.appendChild(btn);
 
     container.appendChild(card);
-  }
+  });
 }
 
 
 document.getElementById("search").addEventListener("input", function(e) {
   var value = e.target.value.toLowerCase();
-  var result = [];
 
-  for (var i = 0; i < dogs.length; i++) {
-    if (dogs[i].name.toLowerCase().includes(value)) {
-      result.push(dogs[i]);
-    }
-  }
+  var result = dogs.filter(function(dog) {
+    return dog.name.toLowerCase().includes(value);
+  });
 
   displayDogs(result);
 });
+
+
+
+document.getElementById("filter").addEventListener("change", function(e) {
+  var value = e.target.value;
+
+  if (value === "") {
+    displayDogs(dogs);
+    return;
+  }
+
+  var result = dogs.filter(function(dog) {
+    if (!dog.temperament) return false;
+
+    return dog.temperament.includes(value);
+  });
+
+  displayDogs(result);
+});
+
+
+
+document.getElementById("sort").addEventListener("change", function(e) {
+
+  var sorted = dogs.slice();
+
+  if (e.target.value === "az") {
+    sorted.sort(function(a, b) {
+      return a.name > b.name ? 1 : -1;
+    });
+  }
+
+  displayDogs(sorted);
+});
+
 
 
 document.getElementById("darkToggle").addEventListener("click", function() {
